@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 # species
 - type: emoteSounds
   id: MaleHuman
@@ -106,6 +110,10 @@
       collection: MaleGasp
     DefaultDeathgasp:
       collection: DeathGasp
+    # Orion-Start
+    Hiss:
+      collection: ReptilianHisses
+    # Orion-End
 
 - type: emoteSounds
   id: FemaleReptilian
@@ -130,6 +138,10 @@
       collection: FemaleGasp
     DefaultDeathgasp:
       collection: FemaleDeathGasp
+    # Orion-Start
+    Hiss:
+      collection: ReptilianHisses
+    # Orion-End
 
 - type: emoteSounds
   id: MaleSlime

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 - type: markingsGroup
   parent: Undergarments
   id: Reptilian
@@ -59,33 +63,54 @@
   components:
   - type: Inventory
     speciesId: reptilian
+    # Orion-Edit-Start
     femaleDisplacements:
       jumpsuit:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Human/displacement.rsi
+            sprite: _Orion/Mobs/Species/displacement.rsi
             state: jumpsuit-female
-      head:
+      shoes:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Reptilian/displacement.rsi
-            state: head
-      mask:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-Start
+      underwear:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Reptilian/displacement.rsi
-            state: mask
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: jumpsuit
+      socks:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-End
     displacements:
-      head:
+      jumpsuit:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Reptilian/displacement.rsi
-            state: head
-      mask:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: jumpsuit
+      shoes:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Reptilian/displacement.rsi
-            state: mask
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-Start
+      underwear:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: jumpsuit
+      socks:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-End
+    # Orion-Edit-End
   - type: InitialBody
     organs:
       Torso: OrganReptilianTorso
@@ -94,10 +119,10 @@
       ArmRight: OrganReptilianArmRight
       HandRight: OrganReptilianHandRight
       HandLeft: OrganReptilianHandLeft
-      LegLeft: OrganReptilianLegLeft
-      LegRight: OrganReptilianLegRight
-      FootLeft: OrganReptilianFootLeft
-      FootRight: OrganReptilianFootRight
+      LegLeft: OrganReptilianLegLeftDigi # Orion-Edit
+      LegRight: OrganReptilianLegRightDigi # Orion-Edit
+      FootLeft: OrganReptilianFootLeftDigi # Orion-Edit
+      FootRight: OrganReptilianFootRightDigi # Orion-Edit
       Brain: OrganReptilianBrain
       Eyes: OrganReptilianEyes
       Tongue: OrganReptilianTongue
@@ -294,14 +319,14 @@
   id: OrganReptilianStomach
   components:
   - type: Stomach
-    specialDigestible:
-      tags:
-      - Fruit
-      - ReptilianFood
-      - Meat
-      - Pill
-      - Crayon
-      - Paper
+#    specialDigestible: # Orion-Edit: Removed
+#      tags:
+#      - Fruit
+#      - ReptilianFood
+#      - Meat
+#      - Pill
+#      - Crayon
+#      - Paper
 
 - type: entity
   parent: [ OrganBaseLiver, OrganSpriteHumanInternal, OrganReptilianInternal, OrganReptilianMetabolizer ]
