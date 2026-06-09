@@ -1,8 +1,13 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Humanoid;
+using Content.Shared.Preferences;
 using Content.Shared.Roles;
-using Content.Shared.Traits;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
 
@@ -32,41 +37,82 @@ public sealed partial class TraitSystem : EntitySystem
             return;
         }
 
-        foreach (var traitId in args.Profile.TraitPreferences)
+        ApplyTraits(args.Mob, args.Profile); // Orion
+    } // Orion-Edit: Separated ApplyTraits
+
+    // Orion-Edit-Start: Separated from OnPlayerSpawnComplete
+    /// <summary>
+    /// Applies every valid trait in the profile, skipping missing trait prototypes instead of aborting the remaining traits.
+    /// </summary>
+    public void ApplyTraits(EntityUid mob, HumanoidCharacterProfile? profile)
+    {
+        // Orion-Start
+        if (!Exists(mob))
         {
-            if (!_prototypeManager.TryIndex<TraitPrototype>(traitId, out var traitPrototype))
+            Log.Error($"Cannot apply traits to missing entity {mob}.");
+            return;
+        }
+
+        if (!HasComp<HumanoidProfileComponent>(mob))
+        {
+            Log.Error($"Cannot apply traits to non-humanoid entity {ToPrettyString(mob)}.");
+            return;
+        }
+
+        if (profile == null)
+        {
+            Log.Error($"Cannot apply traits to {ToPrettyString(mob)} without a character profile.");
+            return;
+        }
+
+        if (profile.TraitPreferences.Count == 0)
+            return;
+
+        var skippedTraitCount = 0;
+        // Orion-End
+
+        foreach (var traitId in profile.TraitPreferences)
+        {
+            if (!_prototypeManager.TryIndex(traitId, out var traitPrototype))
             {
-                Log.Error($"No trait found with ID {traitId}!");
-                return;
+                skippedTraitCount++;
+                Log.Error($"No trait found with ID {traitId} for {ToPrettyString(mob)}; skipping it.");
+                continue;
             }
 
-            if (_whitelistSystem.IsWhitelistFail(traitPrototype.Whitelist, args.Mob) ||
-                _whitelistSystem.IsWhitelistPass(traitPrototype.Blacklist, args.Mob))
+            if (_whitelistSystem.IsWhitelistFail(traitPrototype.Whitelist, mob) ||
+                _whitelistSystem.IsWhitelistPass(traitPrototype.Blacklist, mob))
                 continue;
 
             // Add all components required by the prototype
             if (traitPrototype.Components.Count > 0)
-                EntityManager.AddComponents(args.Mob, traitPrototype.Components, false);
+                EntityManager.AddComponents(mob, traitPrototype.Components, false);
 
             // Add all JobSpecials required by the prototype
             foreach (var special in traitPrototype.Specials)
             {
-                special.AfterEquip(args.Mob);
+                special.AfterEquip(mob);
             }
 
             // Add item required by the trait
             if (traitPrototype.TraitGear == null)
                 continue;
 
-            if (!TryComp(args.Mob, out HandsComponent? handsComponent))
+            if (!TryComp(mob, out HandsComponent? handsComponent))
                 continue;
 
-            var coords = Transform(args.Mob).Coordinates;
+            var coords = Transform(mob).Coordinates;
             var inhandEntity = Spawn(traitPrototype.TraitGear, coords);
-            _sharedHandsSystem.TryPickup(args.Mob,
+            _sharedHandsSystem.TryPickup(mob,
                 inhandEntity,
                 checkActionBlocker: false,
                 handsComp: handsComponent);
         }
+
+        // Orion-Start
+        if (skippedTraitCount > 0)
+            Log.Info($"Skipped {skippedTraitCount} missing trait prototype(s) while applying traits to {ToPrettyString(mob)}.");
+        // Orion-End
     }
+    // Orion-Edit-End
 }
