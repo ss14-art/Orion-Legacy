@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 - type: entity
   id: BaseSubdermalImplant
   name: implant
@@ -306,7 +310,7 @@
     - type: TriggerOnMobstateChange #activates the timer
       mobState:
       - Dead
-      preventSuicide: true
+      preventSuicide: false # Orion-Edit: true > false
     - type: TimerTrigger
       delay: 7
       beepSound:
@@ -323,7 +327,7 @@
       - timer
     - type: Explosive
       explosionType: Default
-      totalIntensity: 3500
+      totalIntensity: 4000 # Orion-Edit: 3500 > 4000
       intensitySlope: 15
       maxIntensity: 70
       canCreateVacuum: true
