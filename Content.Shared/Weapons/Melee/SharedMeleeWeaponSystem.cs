@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 TheShuEd <96445749+theshued@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
@@ -25,6 +30,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Popups;
 using Content.Shared.StatusEffect;
+using Content.Shared.Tag;
 using Content.Shared.Weapons.Melee.Components;
 using Content.Shared.Weapons.Melee.Events;
 using Content.Shared.Weapons.Ranged.Components;
@@ -66,8 +72,11 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
     [Dependency] protected SharedTransformSystem TransformSystem = default!;
     [Dependency] private SharedStaminaSystem _stamina = default!;
     [Dependency] private DamageExamineSystem _damageExamine = default!;
+    [Dependency] private TagSystem _tag = default!; // Orion
 
     [Dependency] private EntityQuery<DamageableComponent> _damageQuery = default!;
+
+    private static readonly ProtoId<TagPrototype> MeleeHitIgnoreTag = "MeleeHitIgnore"; // Orion
 
     private const int AttackMask = (int) (CollisionGroup.MobMask | CollisionGroup.Opaque);
 
@@ -603,6 +612,8 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         var resistanceBypass = GetResistanceBypass(meleeUid, user, component);
         var entities = GetEntityList(ev.Entities);
 
+        entities = entities.Where(e => !_tag.HasTag(e, MeleeHitIgnoreTag)).ToList(); // Orion
+
         if (entities.Count == 0)
         {
             if (meleeUid == user)
@@ -663,6 +674,11 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
             if (entity == user ||
                 !_damageQuery.HasComponent(entity))
                 continue;
+
+            // Orion-Start
+            if (_tag.HasTag(entity, MeleeHitIgnoreTag))
+                continue;
+            // Orion-End
 
             targets.Add(entity);
         }
@@ -766,13 +782,13 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         for (var i = 0; i < increments; i++)
         {
             var castAngle = new Angle(baseAngle + increment * i);
+            var ray = new CollisionRay(position, castAngle.ToWorldVec(), AttackMask); // Orion: Make CollisionRay var for "var res"
             var res = _physics.IntersectRay(mapId,
-                new CollisionRay(position,
-                    castAngle.ToWorldVec(),
-                    AttackMask),
+                ray, // Orion-Edit
                 range,
                 ignore,
                 false)
+                .Where(x => !_tag.HasTag(x.HitEntity, MeleeHitIgnoreTag)) // Orion
                 .ToList();
 
             if (res.Count != 0)

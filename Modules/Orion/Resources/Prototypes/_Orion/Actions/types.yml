@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+# SPDX-FileCopyrightText: 2026 TheShuEd <96445749+theshued@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: entity
+  id: ActionToggleEnergyDome
+  name: Toggle energy dome
+  description: Turn the energy barrier on or off.
+  components:
+  - type: Action
+    itemIconStyle: BigAction
+    priority: -10
+    icon: { sprite: Objects/Weapons/Melee/e_shield.rsi, state: eshield-on }
+    useDelay: 1
+  - type: InstantAction
+    event: !type:ToggleActionEvent
