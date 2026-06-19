@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 - type: entity
   parent: BaseMachinePowered
   id: FaxMachineBase
@@ -87,6 +91,8 @@
   - type: FaxMachine
     name: "Central Command"
     notifyAdmins: true
+  - type: StationGoalFax # Orion
+    receiveAllStationGoals: true
 
 - type: entity
   parent: FaxMachineBase
@@ -115,5 +121,7 @@
     - type: FaxMachine
       name: "Captain's Office"
       receiveNukeCodes: true
+    - type: StationGoalFax # Orion
+      receiveStationGoal: true
     - type: StealTarget
       stealGroup: FaxMachineCaptain
