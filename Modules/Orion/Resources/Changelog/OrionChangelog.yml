@@ -96,3 +96,11 @@ Entries:
   time: '2026-06-14T16:15:22.0000000+00:00'
   prNumber: 27
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/27
+- author: PuroSlavKing, KillanGenifer
+  changes:
+    - type: Add
+      message: Добавлена автоматическая отправка целей станции.
+  id: 11
+  time: '2026-06-19T16:44:46.0000000+00:00'
+  prNumber: 28
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/28
