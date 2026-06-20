@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 _kote <143940725+le-kote@users.noreply.github.com>
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 - type: species
   id: Arachnid
   name: species-name-arachnid
@@ -6,6 +11,10 @@
   defaultSkinTone: "#385878"
   dollPrototype: AppearanceArachnid
   skinColoration: Hues
+  # Orion-Start
+  category: Classic
+  description: "/ServerInfo/_Orion/SpeciesDescriptions/Arachnid.xml"
+  # Orion-End
   maleFirstNames: NamesArachnidFirst
   femaleFirstNames: NamesArachnidFirst
   lastNames: NamesArachnidLast

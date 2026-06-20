@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 _kote <143940725+le-kote@users.noreply.github.com>
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Linq;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Shared.Guidebook;
@@ -164,6 +169,15 @@ public sealed partial class HumanoidProfileEditor
             if (Profile?.Species.Equals(_species[i].ID) == true)
             {
                 SpeciesButton.SelectId(i);
+                // Orion-Start
+                NewSpeciesButton.Text = name;
+
+                if (NewSpeciesButton.Pressed)
+                    continue;
+
+                _speciesWindow?.Dispose();
+                _speciesWindow = null;
+                // Orion-End
             }
         }
 
