@@ -1,6 +1,11 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
 using Content.Server.GameTicking.Events;
@@ -8,6 +13,7 @@ using Content.Server.Spawners.Components;
 using Content.Server.Speech.Components;
 using Content.Server.Station.Components;
 using Content.Shared.CCVar;
+using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
@@ -18,6 +24,7 @@ using Content.Shared.Preferences;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Roles;
+using Content.Shared.Roles.Components;
 using Content.Shared.Roles.Jobs;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -46,6 +53,9 @@ namespace Content.Server.GameTicking
 
         // Mainly to avoid allocations.
         private readonly List<EntityCoordinates> _possiblePositions = new();
+        private readonly Dictionary<NetUserId, string> _ghostRespawnCharacterNames = new(); // Orion
+
+        public bool GhostRespawnCheckSameCharacter { get; set; } = true; // Orion
 
         private List<EntityUid> GetSpawnableStations()
         {
@@ -212,6 +222,32 @@ namespace Content.Server.GameTicking
                 character = HumanoidCharacterProfile.RandomWithSpecies(speciesId);
             }
 
+            // Orion-Start
+            // Check for whether the character isn't the same.
+            if (lateJoin && GhostRespawnCheckSameCharacter && !_adminManager.IsAdmin(player) && !CheckGhostReturnToRound(player, character, out var checkAvoid))
+            {
+                var message = checkAvoid
+                    ? Loc.GetString("ghost-respawn-same-character-slightly-changed-name")
+                    : Loc.GetString("ghost-respawn-same-character");
+                var wrappedMessage = Loc.GetString("chat-manager-server-wrap-message", ("message", message));
+
+                _chatManager.ChatMessageToOne(ChatChannel.Server,
+                    message,
+                    wrappedMessage,
+                    default,
+                    false,
+                    player.Channel,
+                    Color.Red);
+
+                if (LobbyEnabled)
+                    PlayerJoinLobby(player);
+                else
+                    JoinAsObserver(player);
+
+                return;
+            }
+            // Orion-End
+
             // We raise this event to allow other systems to handle spawning this player themselves. (e.g. late-join wizard, etc)
             var bev = new PlayerBeforeSpawnEvent(player, character, jobId, lateJoin, station);
             RaiseLocalEvent(bev);
@@ -361,10 +397,16 @@ namespace Content.Server.GameTicking
             _roles.MindAddJobRole(newMind, silent: silent, jobPrototype: jobId);
             jobName = _jobs.MindTryGetJobName(newMind);
             _admin.UpdatePlayerList(player);
+            _ghostRespawnCharacterNames.Remove(player.UserId); // Orion
         }
 
-        public void Respawn(ICommonSession player)
+        public void Respawn(ICommonSession player, bool recordRespawnCharacter = false) // Orion-Edit
         {
+            // Orion-Start
+            if (recordRespawnCharacter)
+                RecordGhostRespawnCharacter(player);
+            // Orion-End
+
             _mind.WipeMind(player);
             _adminLogger.Add(LogType.Respawn, LogImpact.Medium, $"Player {player} was respawned.");
 
@@ -404,6 +446,118 @@ namespace Content.Server.GameTicking
             PlayerJoinGame(player);
             SpawnObserver(player);
         }
+
+        // Orion-Start
+        private void RecordGhostRespawnCharacter(ICommonSession player)
+        {
+            if (player.GetMind() is not { } mindId || !TryComp<MindComponent>(mindId, out var mind) || mind.CharacterName is not { } characterName)
+                return;
+
+            if (!_roles.MindHasRole<JobRoleComponent>(mindId))
+                return;
+
+            _ghostRespawnCharacterNames[player.UserId] = characterName;
+        }
+
+        private bool CheckGhostReturnToRound(ICommonSession player, HumanoidCharacterProfile character, out bool checkAvoid)
+        {
+            checkAvoid = false;
+
+            if (!_ghostRespawnCharacterNames.TryGetValue(player.UserId, out var previousCharacterName))
+                return true;
+
+            var normalizedPreviousName = NormalizeCharacterName(previousCharacterName);
+            var normalizedCurrentName = NormalizeCharacterName(character.Name);
+
+            if (normalizedPreviousName == normalizedCurrentName)
+                return false;
+
+            var similarity = CalculateStringSimilarity(normalizedPreviousName, normalizedCurrentName);
+            switch (similarity)
+            {
+                case >= 85f:
+                    _chatManager.SendAdminAlert(Loc.GetString("ghost-respawn-log-character-almost-same",
+                        ("player", player.Name),
+                        ("try", false),
+                        ("oldName", previousCharacterName),
+                        ("newName", character.Name)));
+                    checkAvoid = true;
+
+                    return false;
+                case >= 50f:
+                    _chatManager.SendAdminAlert(Loc.GetString("ghost-respawn-log-character-almost-same",
+                        ("player", player.Name),
+                        ("try", true),
+                        ("oldName", previousCharacterName),
+                        ("newName", character.Name)));
+
+                    break;
+            }
+
+            return true;
+        }
+
+        private float CalculateStringSimilarity(string str1, string str2)
+        {
+            var (n, m) = (str1.Length, str2.Length);
+            if (n == 0 || m == 0)
+                return 0;
+
+            var distances = new int[n + 1, m + 1];
+            for (var i = 0; i <= n; i++)
+            {
+                distances[i, 0] = i;
+            }
+
+            for (var j = 0; j <= m; j++)
+            {
+                distances[0, j] = j;
+            }
+
+            for (var i = 1; i <= n; i++)
+            {
+                for (var j = 1; j <= m; j++)
+                {
+                    var cost = str1[i - 1] == str2[j - 1] ? 0 : 1;
+                    distances[i, j] = Math.Min(
+                        Math.Min(distances[i - 1, j] + 1, distances[i, j - 1] + 1),
+                        distances[i - 1, j - 1] + cost);
+                }
+            }
+
+            var maxLength = Math.Max(n, m);
+            return ((maxLength - distances[n, m]) / (float) maxLength) * 100;
+        }
+
+        private static string NormalizeCharacterName(string name)
+        {
+            var normalized = name.Normalize(NormalizationForm.FormKC);
+            var builder = new StringBuilder(normalized.Length);
+            var previousWasWhiteSpace = true;
+
+            foreach (var rune in normalized.EnumerateRunes())
+            {
+                if (Rune.IsWhiteSpace(rune))
+                {
+                    if (!previousWasWhiteSpace)
+                    {
+                        builder.Append(' ');
+                        previousWasWhiteSpace = true;
+                    }
+
+                    continue;
+                }
+
+                builder.Append(rune.ToString().ToUpperInvariant());
+                previousWasWhiteSpace = false;
+            }
+
+            if (builder.Length > 0 && builder[^1] == ' ')
+                builder.Length--;
+
+            return builder.ToString();
+        }
+        // Orion-End
 
         /// <summary>
         /// Spawns an observer ghost and attaches the given player to it. If the player does not yet have a mind, the
