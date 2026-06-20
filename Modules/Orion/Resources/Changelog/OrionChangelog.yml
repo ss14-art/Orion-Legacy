@@ -104,3 +104,13 @@ Entries:
   time: '2026-06-19T16:44:46.0000000+00:00'
   prNumber: 28
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/28
+- author: PuroSlavKing, VMSolidus, Spatison
+  changes:
+    - type: Add
+      message: >-
+        Добавлена кнопка возвращения в раунд призракам. Она позволяет игрокам
+        самостоятельно возвращаться в лобби.
+  id: 12
+  time: '2026-06-20T05:07:53.0000000+00:00'
+  prNumber: 30
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/30
