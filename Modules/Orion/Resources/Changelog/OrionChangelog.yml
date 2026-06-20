@@ -114,3 +114,11 @@ Entries:
   time: '2026-06-20T05:07:53.0000000+00:00'
   prNumber: 30
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/30
+- author: PuroSlavKing, le-kote
+  changes:
+    - type: Add
+      message: Добавлен интерфейс для выбора расы.
+  id: 13
+  time: '2026-06-20T20:11:05.0000000+00:00'
+  prNumber: 32
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/32
