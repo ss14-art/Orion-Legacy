@@ -122,3 +122,13 @@ Entries:
   time: '2026-06-20T20:11:05.0000000+00:00'
   prNumber: 32
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/32
+- author: PuroSlavKing, RedFoxIV
+  changes:
+    - type: Add
+      message: >-
+        Добавлена система выбора бесплатных скинов на призрака. Кнопка находится
+        в лобби.
+  id: 14
+  time: '2026-06-22T10:04:29.0000000+00:00'
+  prNumber: 33
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/33
