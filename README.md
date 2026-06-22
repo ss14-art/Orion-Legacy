@@ -94,9 +94,9 @@
 
 > 1. Клонируйте данный репозиторий.
 ```shell
-git clone https://github.com/AtaraxiaSpaceFoundation/Orion-Station-14.git
+git clone https://github.com/AtaraxiaSpaceFoundation/Orion-Station.git
 ```
-> 2. Откройте коммандную строку в папке репозитория и введите команду для того, чтобы подготовить движок игры.
+> 2. Откройте коммандную строку в папке репозитория и введите команды для того, чтобы подготовить движок игры.
 ```shell
 git submodule sync --recursive
 ```
