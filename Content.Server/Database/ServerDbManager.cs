@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Collections.Immutable;
 using System.IO;
 using System.Net;
@@ -47,6 +52,8 @@ namespace Content.Server.Database
         Task SaveCharacterSlotAsync(NetUserId userId, HumanoidCharacterProfile? profile, int slot);
 
         Task SaveAdminOOCColorAsync(NetUserId userId, Color color);
+
+        Task SaveGhostTypeAsync<TPrototype>(NetUserId userId, ProtoId<TPrototype> ghostProto) where TPrototype : class, IPrototype; // Orion
 
         Task SaveConstructionFavoritesAsync(NetUserId userId, List<ProtoId<ConstructionPrototype>> constructionFavorites);
 
@@ -464,6 +471,14 @@ namespace Content.Server.Database
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.SaveAdminOOCColorAsync(userId, color));
         }
+
+        // Orion-Start
+        public Task SaveGhostTypeAsync<TPrototype>(NetUserId userId, ProtoId<TPrototype> ghostProto) where TPrototype : class, IPrototype
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.SaveGhostTypeAsync(userId, ghostProto.Id));
+        }
+        // Orion-End
 
         public Task SaveConstructionFavoritesAsync(NetUserId userId, List<ProtoId<ConstructionPrototype>> constructionFavorites)
         {

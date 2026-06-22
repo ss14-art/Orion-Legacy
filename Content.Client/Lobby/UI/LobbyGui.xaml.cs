@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -27,6 +28,7 @@ namespace Content.Client.Lobby.UI
 
             LeaveButton.OnPressed += _ => _consoleHost.ExecuteCommand("disconnect");
             OptionsButton.OnPressed += _ => UserInterfaceManager.GetUIController<OptionsUIController>().ToggleWindow();
+            CharacterPreview.CustomGhostsButton.OnPressed += _ => _consoleHost.ExecuteCommand("customghosts"); // Orion
 
             CollapseButton.OnPressed += _ => TogglePanel(false);
             ExpandButton.OnPressed += _ => TogglePanel(true);
@@ -41,6 +43,7 @@ namespace Content.Client.Lobby.UI
             AHelpButton.Text = Loc.GetString("ui-lobby-ahelp-button");
             OptionsButton.Text = Loc.GetString("ui-lobby-options-button");
             LeaveButton.Text = Loc.GetString("ui-lobby-leave-button");
+            CharacterPreview.CustomGhostsButton.Text = Loc.GetString("custom-ghosts-window-title");
         }
         // Orion-End
 

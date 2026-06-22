@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -360,7 +364,7 @@ public sealed partial class PlayTimeTrackingManager : ISharedPlaytimeManager, IP
         return GetPlayTimeForTracker(id, PlayTimeTrackingShared.TrackerOverall);
     }
 
-    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out Dictionary<string, TimeSpan>? time)
+    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out IReadOnlyDictionary<string, TimeSpan>? time) // Orion-Edit: IReadOnlyDictionary
     {
         time = null;
 

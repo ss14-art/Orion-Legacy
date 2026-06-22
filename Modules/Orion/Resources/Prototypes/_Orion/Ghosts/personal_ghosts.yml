@@ -1,0 +1,106 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+# SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: customGhost
+  id: customPlaceholder
+  supportsDeathDamageState: false # Most personal ghost doesnt support damage states
+  category: personal
+  proto: MobObserverCkeyPlaceholder
+  restrictions:
+  - !type:CkeyRestriction
+    ckey: [ PuroSlavKing ]
+  name: custom-ghost-personal-placeholder-name
+  desc: custom-ghost-personal-placeholder-desc
+
+- type: entity
+  parent: MobObserverCkey
+  id: MobObserverCkeyPlaceholder
+  components:
+  - type: Sprite
+    sprite: _Orion/Ghosts/placeholder.rsi
+
+- type: customGhost
+  abstract: true
+  id: CkeyPersonal
+  category: personal
+  name: custom-ghost-personal-name
+  desc: custom-ghost-personal-desc
+
+# Abstract entproto to force transparency on all custom ghosts
+- type: entity
+  abstract: true
+  parent: MobObserver
+  id: MobObserverCkey
+  components:
+  - type: Sprite
+    color: "#ffffffcc" # 0.8 alpha
+
+# PuroSlavKing
+- type: customGhost
+  parent: CkeyPersonal
+  id: PuroSlavKing-ghost
+  restrictions:
+  - !type:CkeyRestriction
+    ckey: [ PuroSlavKing ]
+  proto: MobObserverPuroSlavKing
+
+- type: entity
+  parent: MobObserverCkey
+  id: MobObserverPuroSlavKing
+  description: Hello World!
+  components:
+  - type: Sprite
+    sprite: _Orion/Ghosts/ckey/PuroSlavKing.rsi
+
+# GodFace
+- type: customGhost
+  parent: CkeyPersonal
+  id: GodFace-ghost
+  restrictions:
+  - !type:CkeyRestriction
+    ckey: [ GodFace ]
+  proto: MobObserverGodFace
+
+- type: entity
+  parent: MobObserverCkey
+  id: MobObserverGodFace
+  description: BoO-oO!
+  components:
+  - type: Sprite
+    sprite: _Orion/Ghosts/ckey/GodFace.rsi
+
+# LIZARDWIZARD
+- type: customGhost
+  parent: CkeyPersonal
+  id: LIZARDWIZARD-ghost
+  restrictions:
+  - !type:CkeyRestriction
+    ckey: [ LIZARDWIZARD ]
+  proto: MobObserverLIZARDWIZARD
+
+- type: entity
+  parent: MobObserverCkey
+  id: MobObserverLIZARDWIZARD
+  description: BoO-oO!
+  components:
+  - type: Sprite
+    sprite: _Orion/Ghosts/ckey/LIZARDWIZARD.rsi
+
+# scituzer2
+- type: customGhost
+  parent: CkeyPersonal
+  id: scituzer2-ghost
+  restrictions:
+  - !type:CkeyRestriction
+    ckey: [ scituzer2 ]
+  proto: MobObserverscituzer2
+
+- type: entity
+  parent: MobObserverCkey
+  id: MobObserverscituzer2
+  description: Yarr!
+  components:
+  - type: Sprite
+    sprite: _Orion/Ghosts/ckey/scituzer2.rsi

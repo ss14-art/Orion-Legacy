@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.Construction.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -15,12 +20,13 @@ namespace Content.Shared.Preferences
     {
         private Dictionary<int, HumanoidCharacterProfile> _characters;
 
-        public PlayerPreferences(IEnumerable<KeyValuePair<int, HumanoidCharacterProfile>> characters, int selectedCharacterIndex, Color adminOOCColor, List<ProtoId<ConstructionPrototype>> constructionFavorites)
+        public PlayerPreferences(IEnumerable<KeyValuePair<int, HumanoidCharacterProfile>> characters, int selectedCharacterIndex, Color adminOOCColor, List<ProtoId<ConstructionPrototype>> constructionFavorites, string customGhost = "default") // Orion-Edit: customGhost
         {
             _characters = new Dictionary<int, HumanoidCharacterProfile>(characters);
             SelectedCharacterIndex = selectedCharacterIndex;
             AdminOOCColor = adminOOCColor;
             ConstructionFavorites = constructionFavorites;
+            CustomGhost = customGhost; // Orion
         }
 
         /// <summary>
@@ -44,6 +50,12 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile SelectedCharacter => Characters[SelectedCharacterIndex];
 
         public Color AdminOOCColor { get; set; }
+        public string CustomGhost { get; set; } // Orion
+
+        // Orion-Start
+        public PlayerPreferences WithCustomGhost(string customGhost) =>
+            new(_characters, SelectedCharacterIndex, AdminOOCColor, ConstructionFavorites, customGhost);
+        // Orion-End
 
         /// <summary>
         ///    List of favorite items in the construction menu.

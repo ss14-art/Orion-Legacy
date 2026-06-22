@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -149,6 +154,7 @@ namespace Content.Server.Database
                 UserId = userId.UserId,
                 SelectedCharacterSlot = 0,
                 AdminOOCColor = Color.Red.ToHex(),
+                GhostId = "default", // Orion
                 ConstructionFavorites = [],
             };
 
@@ -183,6 +189,17 @@ namespace Content.Server.Database
             await db.DbContext.SaveChangesAsync();
 
         }
+
+        // Orion-Start
+        public async Task SaveGhostTypeAsync(NetUserId userId, string ghostProto)
+        {
+            await using var db = await GetDb();
+            var prefs = await db.DbContext.Preference.SingleAsync(p => p.UserId == userId.UserId);
+            prefs.GhostId = ghostProto;
+
+            await db.DbContext.SaveChangesAsync();
+        }
+        // Orion-End
 
         public async Task SaveConstructionFavoritesAsync(NetUserId userId, List<ProtoId<ConstructionPrototype>> constructionFavorites)
         {

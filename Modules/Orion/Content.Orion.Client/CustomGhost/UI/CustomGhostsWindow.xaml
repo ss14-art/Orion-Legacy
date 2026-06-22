@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<DefaultWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls;assembly=Content.Client"
+    Title="{Loc 'custom-ghosts-window-title'}"
+    MinSize="300 450"
+    SetSize="300 450">
+    <BoxContainer Orientation="Vertical">
+        <controls:StripeBack>
+            <Label Text="{Loc 'custom-ghosts-window-title'}" HorizontalAlignment="Center" />
+        </controls:StripeBack>
+            <CheckBox Name="ShowAllCheckBox" VerticalAlignment="Center" Text="{Loc 'custom-ghosts-window-show-all-checkbox'}" ToolTip="{Loc 'custom-ghosts-window-show-all-checkbox-tooltip'}" />
+        <ScrollContainer VerticalExpand="True">
+            <BoxContainer Name="ScrollBox" Orientation="Vertical">
+            </BoxContainer>
+        </ScrollContainer>
+    </BoxContainer>
+</DefaultWindow>

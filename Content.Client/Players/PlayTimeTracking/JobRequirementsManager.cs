@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.CCVar;
 using Content.Shared.Players;
@@ -44,6 +49,20 @@ public sealed partial class JobRequirementsManager : ISharedPlaytimeManager
 
         _client.RunLevelChanged += ClientOnRunLevelChanged;
     }
+
+    // Orion-Start
+    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out IReadOnlyDictionary<string, TimeSpan>? time)
+    {
+        if (id != _playerManager.LocalSession)
+        {
+            time = null;
+            return false;
+        }
+
+        time = new Dictionary<string, TimeSpan>(_roles);
+        return true;
+    }
+    // Orion-End
 
     private void ClientOnRunLevelChanged(object? sender, RunLevelChangedEventArgs e)
     {

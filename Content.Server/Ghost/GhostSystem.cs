@@ -1,9 +1,15 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Linq;
 using System.Numerics;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
 using Content.Server.GameTicking;
 using Content.Server.Mind;
+using Content.Server.Preferences.Managers;
 using Content.Server.Roles.Jobs;
 using Content.Shared.Actions;
 using Content.Shared.CCVar;
@@ -32,6 +38,7 @@ using Content.Shared.Warps;
 using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
+using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
@@ -67,6 +74,7 @@ namespace Content.Server.Ghost
         [Dependency] private TagSystem _tag = default!;
         [Dependency] private NameModifierSystem _nameMod = default!;
         [Dependency] private GhostSpriteStateSystem _ghostState = default!;
+        [Dependency] private IServerPreferencesManager _prefs = default!; // Orion
 
         [Dependency] private EntityQuery<GhostComponent> _ghostQuery = default!;
         [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
@@ -464,10 +472,24 @@ namespace Content.Server.Ghost
                 return null;
             }
 
-            var ghost = SpawnAtPosition(GameTicker.ObserverPrototypeName, spawnPosition.Value);
+            // Orion-Start
+            EntProtoId<GhostComponent> ghostPrototype = GameTicker.ObserverPrototypeName.Id;
+            var supportsDeathDamageState = true;
+            if (mind.Comp.UserId is { } ghostUserId)
+            {
+                var ghostStyle = _prefs.GetPreferencesOrNull(ghostUserId)?.CustomGhost ?? "default";
+                var ev = new ResolvePlayerGhostPrototypeEvent(ghostUserId, ghostStyle, ghostPrototype);
+                RaiseLocalEvent(ev);
+                ghostPrototype = ev.GhostPrototype;
+                supportsDeathDamageState = ev.SupportsDeathDamageState;
+            }
+            // Orion-End
+
+            var ghost = SpawnAtPosition(ghostPrototype, spawnPosition.Value); // Orion-Edit
             var ghostComponent = Comp<GhostComponent>(ghost);
 
-            if (TryComp<GhostSpriteStateComponent>(ghost, out var state))  // If more TryComps are added this should be turned into an event
+            // Orion-Edit: supportsDeathDamageState
+            if (supportsDeathDamageState && TryComp<GhostSpriteStateComponent>(ghost, out var state))  // If more TryComps are added this should be turned into an event
             {
                 _ghostState.SetGhostSprite((ghost, state), mind);
             }
@@ -602,4 +624,14 @@ namespace Content.Server.Ghost
         public bool CanReturnGlobal { get; } = canReturnGlobal;
         public bool Result { get; set; }
     }
+
+    // Orion-Start
+    public sealed class ResolvePlayerGhostPrototypeEvent(NetUserId userId, string ghostStyleId, EntProtoId<GhostComponent> ghostPrototype) : EntityEventArgs
+    {
+        public NetUserId UserId { get; } = userId;
+        public string GhostStyleId { get; } = ghostStyleId;
+        public EntProtoId<GhostComponent> GhostPrototype { get; set; } = ghostPrototype;
+        public bool SupportsDeathDamageState { get; set; } = true;
+    }
+    // Orion-End
 }
