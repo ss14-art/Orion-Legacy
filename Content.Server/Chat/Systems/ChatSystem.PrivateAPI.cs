@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Linq;
 using Content.Shared.Chat;
 using Content.Shared.Database;
@@ -200,6 +204,10 @@ public sealed partial class ChatSystem
         if (checkEmote &&
             !TryEmoteChatInput(source, action))
             return;
+
+        // Orion-Start
+        RaiseEmoteDetected(source, action, voluntary: true);
+        // Orion-End
 
         SendInVoiceRange(ChatChannel.Emotes, action, wrappedMessage, source, range, author);
         if (!hideLog)

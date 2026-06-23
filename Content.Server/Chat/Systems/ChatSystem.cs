@@ -1,7 +1,12 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Globalization;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
+using Content.Server._Orion.ServerProtection.Events;
 using Content.Server.GameTicking;
 using Content.Server.Speech.EntitySystems;
 using Content.Server.Station.Systems;
@@ -145,6 +150,11 @@ public sealed partial class ChatSystem : SharedChatSystem
             return;
         }
 
+        // Orion-Start
+        if (TryCancelICMessage(message, source))
+            return;
+        // Orion-End
+
         if (player != null && _chatManager.HandleRateLimit(player) != RateLimitStatus.Allowed)
             return;
 
@@ -245,6 +255,11 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         message = SanitizeInGameOOCMessage(message);
 
+        // Orion-Start
+        if (TryCancelOOCMessage(message, player))
+            return;
+        // Orion-End
+
         var sendType = type;
         // If dead player LOOC is disabled, unless you are an admin with Moderator perms, send dead messages to dead chat
         if ((_adminManager.IsAdmin(player) && _adminManager.HasAdminFlag(player, AdminFlags.Moderator)) // Override if admin
@@ -275,6 +290,28 @@ public sealed partial class ChatSystem : SharedChatSystem
                 break;
         }
     }
+
+    // Orion-Start
+    public bool TryCancelICMessage(string message, EntityUid source)
+    {
+        var ev = new ICChatMessageAttemptEvent(message, source);
+        RaiseLocalEvent(ev);
+        return ev.Cancelled;
+    }
+
+    public bool TryCancelOOCMessage(string message, ICommonSession player)
+    {
+        var ev = new OOCChatMessageAttemptEvent(message, player);
+        RaiseLocalEvent(ev);
+        return ev.Cancelled;
+    }
+
+    private void RaiseEmoteDetected(EntityUid source, string action, bool voluntary)
+    {
+        var ev = new EmoteChatMessageDetectedEvent(source, action, voluntary);
+        RaiseLocalEvent(ev);
+    }
+    // Orion-End
 }
 
 /// <summary>

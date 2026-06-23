@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared.Station.Components;
@@ -69,6 +73,11 @@ public sealed partial class ChatSystem
             // you can't make a station announcement without a station
             return;
         }
+
+        // Orion-Start
+        if (TryCancelICMessage(message, source))
+            return;
+        // Orion-End
 
         if (!TryComp<StationDataComponent>(station, out var stationDataComp)) return;
 

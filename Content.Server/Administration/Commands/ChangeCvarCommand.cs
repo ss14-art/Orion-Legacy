@@ -1,6 +1,11 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Linq;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
+using Content.Server._Orion.ServerProtection.Events;
 using Content.Shared.Administration;
 using Content.Shared.Database;
 using Robust.Shared.Configuration;
@@ -20,6 +25,7 @@ public sealed partial class ChangeCvarCommand : IConsoleCommand
     [Dependency] private IConfigurationManager _configurationManager = default!;
     [Dependency] private IAdminLogManager _adminLogManager = default!;
     [Dependency] private CVarControlManager _cVarControlManager = default!;
+    [Dependency] private IEntityManager _entityManager = default!; // Orion
 
     /// <summary>
     /// Searches the list of cvars for a cvar that matches the search string.
@@ -178,6 +184,10 @@ public sealed partial class ChangeCvarCommand : IConsoleCommand
                 }
 
                 var oldValue = _configurationManager.GetCVar<object>(cvar);
+                // Orion-Start
+                var cvarChanged = new CVarChangedByCommandEvent(cvar, shell.Player, oldValue, parsed);
+                _entityManager.EventBus.RaiseEvent(EventSource.Local, cvarChanged);
+                // Orion-End
                 _configurationManager.SetCVar(cvar, parsed);
                 _adminLogManager.Add(LogType.AdminCommands,
                     LogImpact.Extreme,
