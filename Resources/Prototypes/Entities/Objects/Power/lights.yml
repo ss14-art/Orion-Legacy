@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+# SPDX-FileCopyrightText: 2026 ThereDrD <88589686+theredrd0@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 - type: entity
   parent: BaseItem
   id: BaseLightbulb
@@ -123,8 +128,8 @@
   components:
   - type: LightBulb
     bulb: Bulb
-    color: "#FFD1A3" # 4000K color temp
-    lightEnergy: 1.0
+    color: "#e6d8cb" # 4000K color temp | Orion-Edit: Changed color
+    lightEnergy: 0.8 # Orion-Edit: 1.0 > 0.8
     lightRadius: 6
     lightSoftness: 1.1
   - type: Tag
@@ -233,8 +238,8 @@
   description: A light fixture.
   components:
   - type: LightBulb
-    color: "#FFE4CE" # 5000K color temp
-    lightEnergy: 0.8
+    color: "#dbd1bc" # 5000K color temp | Orion-Edit: Changed color
+    lightEnergy: 1.0 # Orion-Edit: 0.8 > 1.0
     lightRadius: 10
     lightSoftness: 1
     PowerUse: 25
