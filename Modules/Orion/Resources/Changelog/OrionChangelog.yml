@@ -132,3 +132,13 @@ Entries:
   time: '2026-06-22T10:04:29.0000000+00:00'
   prNumber: 33
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/33
+- author: PuroSlavKing
+  changes:
+    - type: Add
+      message: >-
+        Добавлена авто-модерация чата, эмоций и действий администрации,
+        применяющая автоматические наказания на нарушителей.
+  id: 15
+  time: '2026-06-23T17:49:42.0000000+00:00'
+  prNumber: 34
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/34
