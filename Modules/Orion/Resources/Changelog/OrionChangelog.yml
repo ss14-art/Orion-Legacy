@@ -142,3 +142,13 @@ Entries:
   time: '2026-06-23T17:49:42.0000000+00:00'
   prNumber: 34
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/34
+- author: PuroSlavKing, ThereDrD0
+  changes:
+    - type: Add
+      message: Добавлен шейдер объемного освещения на лампы.
+    - type: Tweak
+      message: Изменён цвет освещения большинства ламп.
+  id: 16
+  time: '2026-06-23T23:23:41.0000000+00:00'
+  prNumber: 35
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/35
