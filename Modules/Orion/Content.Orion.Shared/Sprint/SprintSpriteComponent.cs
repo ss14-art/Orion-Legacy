@@ -14,11 +14,11 @@ public sealed partial class SprintSpriteComponent : Component
     /// Interval in seconds between sprite spawns.
     /// </summary>
     [DataField]
-    public float SpawnInterval = 1f;
+    public float SpawnInterval = 0.6f;
+
     /// <summary>
     /// Time accumulated since the last sprite spawn.
     /// </summary>
-    [DataField]
     public float TimeSinceLastSpawn;
 
     /// <summary>
@@ -26,5 +26,5 @@ public sealed partial class SprintSpriteComponent : Component
     /// Must be an entity prototype with a sprite and optional <see cref="Robust.Shared.Spawners.TimedDespawnComponent"/>.
     /// </summary>
     [DataField]
-    public string EffectPrototype = "SprintEffect";
+    public string EntProtoId = "OrionSprintEffect";
 }
