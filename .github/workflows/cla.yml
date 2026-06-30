@@ -44,9 +44,9 @@ jobs:
             $owner/$repo#${{ github.event.pull_request.number || github.event.issue.number }}
           custom-pr-sign-comment: "Я прочитал Contributor License Agreement и принимаю его условия"
           custom-notsigned-prcomment: |
-            Спасибо за вклад в Orion Station!
+            Спасибо за вклад в Orion Legacy!
 
-            Перед объединением Pull Request все его участники должны принять Contributor License Agreement Ataraxia Space Foundation.
+            Перед объединением Pull Request все его участники должны принять Contributor License Agreement ss14-art.
 
             Ознакомьтесь с документом:
             [Contributor License Agreement](https://github.com/ss14-art/Orion-Legacy/blob/master/CLA.md)
