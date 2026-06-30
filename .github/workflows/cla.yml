@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+# SPDX-FileCopyrightText: 2026 ReWAFFlution <rockstarfly65@gmail.com>
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -20,13 +21,6 @@ jobs:
   CLAAssistant:
     runs-on: ubuntu-latest
     steps:
-      - name: "Generate Orion GitHub App token"
-        id: app-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.ORION_APP_ID }}
-          private-key: ${{ secrets.ORION_APP_PRIVATE_KEY }}
-
       - name: "CLA Assistant"
         if: >-
           (github.event.comment.body == 'recheck' ||
@@ -34,13 +28,13 @@ jobs:
           github.event_name == 'pull_request_target'
         uses: contributor-assistant/github-action@v2.6.1
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           # the below token should have repo scope and must be manually added by you in the repository's secret
           # This token is required only if you have configured to store the signatures in a remote repository/organization
           # PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           path-to-signatures: "signatures/orion/version1/cla.json"
-          path-to-document: "https://github.com/AtaraxiaSpaceFoundation/Orion-Station/blob/master/CLA.md" # e.g. a CLA or a DCO document
+          path-to-document: "https://github.com/ss14-art/Orion-Legacy/blob/master/CLA.md" # e.g. a CLA or a DCO document
           # branch should not be protected
           branch: "master"
           allowlist: GoobAutomatedBot
@@ -55,7 +49,7 @@ jobs:
             Перед объединением Pull Request все его участники должны принять Contributor License Agreement Ataraxia Space Foundation.
 
             Ознакомьтесь с документом:
-            [Contributor License Agreement](https://github.com/AtaraxiaSpaceFoundation/Orion-Station/blob/master/CLA.md)
+            [Contributor License Agreement](https://github.com/ss14-art/Orion-Legacy/blob/master/CLA.md)
 
             Чтобы принять соглашение, скопируйте текст ниже и отправьте его отдельным комментарием.
           custom-allsigned-prcomment: |
