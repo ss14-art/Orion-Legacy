@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 ReWAFFlution <rockstarfly65@gmail.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 <h1 align="center"> <img alt="Orion Station" width="480" height="120" src="https://raw.githubusercontent.com/AtaraxiaSpaceFoundation/asset-dump/refs/heads/master/OrionStation/Orion-Banner-Big.png" /> </h1>
 
 <p align="center">
