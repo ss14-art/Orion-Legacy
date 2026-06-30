@@ -16,10 +16,10 @@
 
 **Orion** — это русскоязычный форк [Goob Station](https://github.com/Goob-Station/Goob-Reforged), который стремится возродить дух классического геймплея Space Station 13, черпая вдохновение из таких проектов, как [/tg/station](https://github.com/tgstation/tgstation) и [Shiptest](https://github.com/shiptest-ss13/Shiptest). Мы фокусируемся на сочетании проверенных временем механик с инновационными идеями, создавая уникальный и приятный опыт игры в космическое безумие.
 
----
+<!-- ---
 
 <div align="center">
-    
+
 ## Ссылки
 
 </div>
@@ -28,14 +28,14 @@
 **[Discord Server](https://discord.gg/K48JujjjsC)**<br>В космосе вас никто не услышит.
 
 [<img src="https://i.imgur.com/XiS9QP5.png" alt="ASF" width="150" align="left">](https://github.com/AtaraxiaSpaceFoundation)
-**[Ataraxia Space Foundation](https://github.com/AtaraxiaSpaceFoundation)**<br>Специализируемся на разработке этого билда.
+**[Ataraxia Space Foundation](https://github.com/AtaraxiaSpaceFoundation)**<br>Специализируемся на разработке этого билда. -->
 
 ---
 <div align="center">
 
 ## Активность репозитория
 
-![Активность PR](https://repobeats.axiom.co/api/embed/50c8c950821b573c8bcca8158d8f2b99ee06417d.svg "ZZZ")
+![Активность PR](https://repobeats.axiom.co/api/embed/c38a5cbdf7f752eef711a9c842fa692f58a3d49b.svg "Активность репозитория")
 
 </div>
 
@@ -49,7 +49,7 @@
 
 </div>
 
-> [!WARNING]  
+> [!WARNING]
 > **Orion не имеет официальных игровых серверов**.
 
 ---
@@ -87,19 +87,16 @@
 > [!TIP]
 > Используйте [IDE Rider](https://github.com/designinlife/jetbrains), он неимоверно облегчит вам жизнь, если вы собираетесь влиться в разработку (код), или билдить сборку, больше пары раз.
 
-Следуйте гайду от [Джубами](https://docs.goobstation.com/en/general-development/setup.html) по настройке рабочей среды, но учитывайте, что репозитории отличаются друг от друга и некоторые вещи могут отличаться.
+Следуйте гайду от [Goob](https://docs.goobstation.com/en/general-development/setup.html) по настройке рабочей среды, но учитывайте, что репозитории отличаются друг от друга и некоторые вещи могут отличаться.
 Ниже перечислены скрипты и методы облегчающие работу с билдом.
 
 ### Windows
 
 > 1. Клонируйте данный репозиторий.
 ```shell
-git clone https://github.com/AtaraxiaSpaceFoundation/Orion-Station.git
+git clone https://github.com/ss14-art/Orion-Legacy.git
 ```
 > 2. Откройте коммандную строку в папке репозитория и введите команды для того, чтобы подготовить движок игры.
-```shell
-git submodule sync --recursive
-```
 ```shell
 git submodule update --init --recursive
 ```
