@@ -7,6 +7,7 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Input;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Standing;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
@@ -26,6 +27,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
     [Dependency] private SharedStaminaSystem _stamina = default!;
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private ILogManager _logManager = default!;
+    [Dependency] private StandingStateSystem _standing = default!;
 
     private EntityQuery<SprintComponent> _sprintQuery;
     private EntityQuery<StaminaComponent> _staminaQuery;
@@ -84,16 +86,9 @@ public sealed partial class SharedSprintSystem : EntitySystem
             return;
 
         // Stop sprint if entity can no longer move (stunned, dead, asleep, etc.)
-        if (!CanSprintEntity(uid))
+        if ((!CanSprintEntity(uid))
+        || (!_staminaQuery.TryGetComponent(uid, out var stamina)))
         {
-            // _log.Info($"Stopping sprint on {ToPrettyString(uid)} - entity cannot move");
-            StopSprint(uid, sprint);
-            return;
-        }
-
-        if (!_staminaQuery.TryGetComponent(uid, out var stamina))
-        {
-            // _log.Warning($"Stopping sprint on {ToPrettyString(uid)} - missing StaminaComponent");
             StopSprint(uid, sprint);
             return;
         }
@@ -206,11 +201,9 @@ public sealed partial class SharedSprintSystem : EntitySystem
 
     private bool CanSprintEntity(EntityUid uid)
     {
-        if (EntityManager.IsQueuedForDeletion(uid))
-            return false;
-
-        // Check CanMove flag (handles stun, sleep, death, etc.)
-        if (_moverQuery.TryGetComponent(uid, out var mover) && !mover.CanMove)
+        if ((EntityManager.IsQueuedForDeletion(uid))
+        || (_moverQuery.TryGetComponent(uid, out var mover) && !mover.CanMove) // Check CanMove flag (handles stun, sleep, death, etc.)
+        || (_standing.IsDown(uid))) // Can't sprint while lying down (knocked down, crawling, etc.)
             return false;
 
         return true;
