@@ -10,7 +10,7 @@ By submitting a Contribution, the Contributor confirms that they have read, unde
 
 **Organization** means ss14-art.
 
-**Organization Leader** means the individual officially designated as the leader and final decision-maker of Ataraxia Space Foundation.
+**Organization Leader** means the individual officially designated as the leader and final decision-maker of ss14-art.
 
 **Project** means Orion Station or any other repository, software project, documentation project, or related resource managed by ss14-art.
 

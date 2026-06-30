@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2026 ReWAFFlution <rockstarfly65@gmail.com>
-
-SPDX-License-Identifier: AGPL-3.0-or-later
--->
-
 <h1 align="center"> <img alt="Orion Station" width="480" height="120" src="https://raw.githubusercontent.com/AtaraxiaSpaceFoundation/asset-dump/refs/heads/master/OrionStation/Orion-Banner-Big.png" /> </h1>
 
 <p align="center">
@@ -79,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 Перед отправкой изменений ознакомьтесь с [Contributor License Agreement](CLA.md). Для принятия Pull Request все его участники должны принять CLA через комментарий, предложенный автоматическим CLA-ботом.
 
-Отправляя изменения и принимая CLA, участник сохраняет авторские права на собственный вклад, но предоставляет Ataraxia Space Foundation права, перечисленные в соглашении.
+Отправляя изменения и принимая CLA, участник сохраняет авторские права на собственный вклад, но предоставляет ss14-art права, перечисленные в соглашении.
 
 ---
 <div align="center">
