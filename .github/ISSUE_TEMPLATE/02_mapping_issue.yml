@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 ReWAFFlution <rockstarfly65@gmail.com>
+#
+# SPDX-License-Identifier: MPL-2.0
+
 name: Сообщите о проблеме с картой
 description: Сообщите о проблеме с картой, связанные с ошибками, недопустимыми действиями или другими проблемами, которые вы заметили на карте.
 body:
