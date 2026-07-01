@@ -18,7 +18,6 @@ namespace Content.Server.Audio.Jukebox;
 
 public sealed partial class JukeboxSystem : SharedJukeboxSystem
 {
-    [Dependency] private IPrototypeManager _protoManager = default!;
     [Dependency] private AppearanceSystem _appearanceSystem = default!;
     // Orion-Start
     [Dependency] private IGameTiming _gameTiming = default!;
@@ -248,7 +247,7 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
         else
         {
             if (string.IsNullOrEmpty(ent.Comp.SelectedSongId) ||
-                !_protoManager.Resolve(ent.Comp.SelectedSongId, out var jukeboxProto))
+                !ProtoMan.Resolve(ent.Comp.SelectedSongId, out var jukeboxProto))
             {
                 return false;
             }

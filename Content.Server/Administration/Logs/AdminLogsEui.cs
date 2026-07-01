@@ -141,7 +141,7 @@ public sealed partial class AdminLogsEui : BaseEui
                     break;
                 // Orion-End
 
-                await SendLogs(true, filter); // Orion-Edit
+                await SendLogs(true, _filter, filter); // Orion-Edit
                 break;
             }
             case NextLogsRequest:
@@ -190,10 +190,13 @@ public sealed partial class AdminLogsEui : BaseEui
                     _ => throw new ArgumentOutOfRangeException(nameof(filter.DateOrder), filter.DateOrder, null),
                 };
 
-                filter.LastLogId = logs[largestId].Id;
-            }
+            filter.LastLogId = logs[largestId].Id;
+        }
 
-            var message = new NewLogs(logs, replace, logs.Count >= filter.Limit);
+        var message = new NewLogs(logs, replace, logs.Count >= filter.Limit);
+
+        if (filter.CancellationToken.IsCancellationRequested)
+            return;
 
             SendMessage(message);
 
