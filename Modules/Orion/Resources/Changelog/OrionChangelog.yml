@@ -152,3 +152,11 @@ Entries:
   time: '2026-06-23T23:23:41.0000000+00:00'
   prNumber: 35
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/35
+- author: ReWAFFlution
+  changes:
+    - type: Add
+      message: Добавлен ускоренный режим бега (Спринт).
+  id: 17
+  time: '2026-06-30T16:51:36.0000000+00:00'
+  prNumber: 2
+  prUrl: https://github.com/ss14-art/Orion-Legacy/pull/2
